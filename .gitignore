@@ -1,0 +1,158 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+*.lcov
+.nyc_output
+
+# Production
+build/
+dist/
+out/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+*.tmp
+*.bak
+*.backup
+
+# Package managers
+.npm
+.yarn-integrity
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# TypeScript
+*.tsbuildinfo
+.next/
+
+# Parcel
+.cache
+.parcel-cache
+
+# Next.js
+.next/
+out/
+
+# Nuxt.js
+.nuxt
+dist/
+
+# Gatsby
+.cache/
+public
+
+# VuePress
+.vuepress/dist
+
+# Serverless
+.serverless/
+
+# FuseBox
+.fusebox/
+
+# DynamoDB
+.dynamodb/
+
+# TernJS
+.tern-port
+
+# Stores
+.vscode-test
+
+# AI/ML
+.ai/
+*.ckpt
+*.h5
+*.pkl
+*.joblib
+checkpoints/
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# Examples (keeping EXAMPLES in archive)
+# Uncomment if you want to exclude EXAMPLES folder
+# EXAMPLES/
+
+# Documentation build
+docs/_build/
+site/
+
+# Miscellaneous
+.grunt
+.lock-wscript
+.npm
+.node_repl_history
+.yarn-integrity
+.cache/
+.parcel-cache/
+.webpack/
+.svelte-kit/
+
+# Embedded repositories
+EXAMPLES/zep_examples/zep-stage/

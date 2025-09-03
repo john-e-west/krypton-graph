@@ -1,0 +1,92 @@
+{
+  "company_overview": {
+    "name": "NeuralTech Industries",
+    "founded": "2019",
+    "headquarters": "San Francisco, CA",
+    "industry": "Artificial Intelligence",
+    "employees": 250,
+    "funding": {
+      "total_raised": "$45M",
+      "last_round": "Series B",
+      "investors": ["Venture Partners", "AI Capital", "Tech Ventures"]
+    }
+  },
+  "leadership": {
+    "ceo": {
+      "name": "Sarah Chen",
+      "background": "Former Google AI Research Lead",
+      "tenure": "Since 2019"
+    },
+    "cto": {
+      "name": "Michael Rodriguez",
+      "background": "Ex-Microsoft Azure ML Platform",
+      "tenure": "Since 2020"
+    },
+    "vp_engineering": {
+      "name": "Emily Watson",
+      "background": "Previously at OpenAI",
+      "tenure": "Since 2021"
+    }
+  },
+  "products": [
+    {
+      "name": "VisionAI Pro",
+      "category": "Computer Vision Platform",
+      "launch_date": "2020-Q3",
+      "customers": 150,
+      "revenue": "$12M ARR"
+    },
+    {
+      "name": "NLP Studio",
+      "category": "Natural Language Processing Suite",
+      "launch_date": "2021-Q1",
+      "customers": 85,
+      "revenue": "$8M ARR"
+    },
+    {
+      "name": "AutoML Enterprise",
+      "category": "Automated Machine Learning",
+      "launch_date": "2022-Q2",
+      "customers": 45,
+      "revenue": "$5M ARR"
+    }
+  ],
+  "engineering_teams": [
+    {
+      "team": "Core ML",
+      "size": 35,
+      "lead": "David Kim",
+      "focus": "Machine learning infrastructure and algorithms"
+    },
+    {
+      "team": "Platform Engineering",
+      "size": 28,
+      "lead": "Lisa Zhang",
+      "focus": "Cloud infrastructure and deployment"
+    },
+    {
+      "team": "Applied AI",
+      "size": 42,
+      "lead": "James Thompson",
+      "focus": "Customer-specific AI solutions"
+    }
+  ],
+  "partnerships": [
+    {
+      "partner": "CloudScale Inc",
+      "type": "Technology Integration",
+      "since": "2021"
+    },
+    {
+      "partner": "DataFlow Systems",
+      "type": "Data Pipeline Integration",
+      "since": "2022"
+    }
+  ],
+  "recent_news": [
+    "NeuralTech announces $25M Series B funding round led by AI Capital",
+    "VisionAI Pro wins 'Best Computer Vision Platform' award at TechSummit 2023",
+    "Partnership with CloudScale expands enterprise deployment capabilities",
+    "Emily Watson joins as VP of Engineering from OpenAI"
+  ]
+}

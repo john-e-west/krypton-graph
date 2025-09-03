@@ -1,0 +1,68 @@
+schema: 1
+story: 'UI-EPIC-003.UI-002'
+story_title: 'Ontology Editor Interface'
+gate: CONCERNS
+status_reason: 'Core UI implemented but critical features incomplete and test failures present.'
+reviewer: 'Quinn (Test Architect)'
+updated: '2025-09-02T12:00:00Z'
+
+waiver: { active: false }
+
+top_issues:
+  - id: 'TEST-001'
+    severity: high
+    finding: 'Unit test failures in import/export utilities affecting core functionality'
+    suggested_action: 'Fix test failures in generateExportFilename and importOntologyFile functions'
+  - id: 'IMPL-001'
+    severity: high
+    finding: 'Import/export functionality contains placeholder console.log statements instead of implementation'
+    suggested_action: 'Implement actual import/export logic using utility functions'
+  - id: 'IMPL-002'
+    severity: medium
+    finding: 'Auto-save functionality missing - critical for Convex demonstration'
+    suggested_action: 'Implement auto-save with 2-second delay and status indicators'
+  - id: 'IMPL-003'
+    severity: medium
+    finding: 'Real-time collaboration updates not implemented'
+    suggested_action: 'Add Convex subscription for real-time ontology updates'
+  - id: 'CONFIG-001'
+    severity: medium
+    finding: 'Using react-query instead of Convex data fetching patterns'
+    suggested_action: 'Migrate to Convex useQuery/useMutation hooks for consistency'
+  - id: 'TEST-002'
+    severity: medium
+    finding: 'Low integration test coverage (28% on main editor component)'
+    suggested_action: 'Add comprehensive integration tests for drag-drop and edge creation'
+
+risk_summary:
+  totals: { critical: 0, high: 2, medium: 4, low: 0 }
+  recommendations:
+    must_fix: 
+      - 'Fix failing unit tests before deployment'
+      - 'Implement actual import/export functionality'
+    monitor:
+      - 'Track auto-save implementation progress'
+      - 'Monitor real-time collaboration development'
+
+evidence:
+  tests_reviewed: 8
+  risks_identified: 6
+  trace:
+    ac_covered: [1, 2, 3, 4, 5, 6] # Three-panel layout, drag-drop, edges, properties, graph viz, undo/redo
+    ac_gaps: [7, 8, 9] # Real-time collaboration, auto-save, keyboard shortcuts
+
+quality_score: 65
+
+recommendations:
+  immediate:
+    - action: "Fix unit test failures in import/export utilities"
+      refs: ["src/__tests__/unit/utils/ontologyImportExport.test.ts"]
+    - action: "Replace console.log placeholders with actual import/export implementation"
+      refs: ["src/pages/OntologyEditor.tsx:271-277"]
+  future:
+    - action: "Migrate from react-query to Convex data patterns"
+      refs: ["src/pages/OntologyEditor.tsx:56-100"]
+    - action: "Implement auto-save with visual indicators"
+      refs: ["src/components/editor/EditorToolbar.tsx"]
+    - action: "Add real-time collaboration via Convex subscriptions"
+      refs: ["src/pages/OntologyEditor.tsx"]

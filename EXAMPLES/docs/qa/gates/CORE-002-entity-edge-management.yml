@@ -1,0 +1,28 @@
+schema: 1
+story: 'CORE-002'
+gate: CONCERNS
+status_reason: 'Core functionality implemented with auth integration, but lacks dedicated test coverage and some features incomplete.'
+reviewer: 'Quinn'
+updated: '2025-09-01T21:27:00Z'
+top_issues:
+  - id: 'TEST-003'
+    severity: high
+    finding: 'No dedicated test suite for entity/edge operations'
+    suggested_action: 'Create comprehensive test suite for entities.ts and edges.ts'
+  - id: 'IMPL-001'
+    severity: medium
+    finding: 'Test versions exist (testEntities.ts) but production code uses auth middleware'
+    suggested_action: 'Ensure test environment can handle auth requirements'
+  - id: 'REQ-002'
+    severity: medium
+    finding: 'Bulk operations and export functionality not fully implemented'
+    suggested_action: 'Complete bulkCreate and export methods as per requirements'
+  - id: 'DOC-001'
+    severity: low
+    finding: 'No API documentation for entity/edge type schemas'
+    suggested_action: 'Add JSDoc comments for complex property schema structures'
+  - id: 'PERF-002'
+    severity: low
+    finding: 'getConnected query could be optimized with better indexing'
+    suggested_action: 'Consider composite indexes for graph traversal queries'
+waiver: { active: false }
