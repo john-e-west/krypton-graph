@@ -28,10 +28,17 @@ Krypton Graph is a sophisticated knowledge management platform that combines:
 
 ### Core Documents
 
+- [`/docs/prd.md`](./docs/prd.md) - Product Requirements Document v1.0
 - [`/docs/architecture.md`](./docs/architecture.md) - Complete system architecture
-- [`/docs/front-end-spec.md`](./docs/front-end-spec.md) - Authoritative UI/UX specification
+- [`/docs/front-end-spec.md`](./docs/front-end-spec.md) - Authoritative UI/UX specification v1.1
 - [`/docs/architecture/`](./docs/architecture/) - Sharded architecture components
 - [`/docs/user-stories/`](./docs/user-stories/) - User journey documentation
+
+### Planning & Decisions
+
+- [`/docs/version-roadmap.md`](./docs/version-roadmap.md) - Feature roadmap and version planning
+- [`/docs/decisions/`](./docs/decisions/) - Architecture decision records
+  - [`2025-01-04-frontend-prd-reconciliation.md`](./docs/decisions/2025-01-04-frontend-prd-reconciliation.md) - Alignment decisions between Frontend and PRD
 
 ### Architecture Highlights
 
@@ -46,10 +53,13 @@ The system follows a clone-before-modify pattern ensuring zero data loss:
 ```
 krypton-graph/
 ├── docs/
+│   ├── prd.md                   # Product requirements document
 │   ├── architecture.md          # Main architecture document
 │   ├── front-end-spec.md        # UI/UX specification
+│   ├── version-roadmap.md       # Version planning and roadmap
 │   ├── architecture/            # Detailed architecture components
-│   └── user-stories/            # User journey documentation
+│   ├── user-stories/            # User journey documentation
+│   └── decisions/               # Architecture decision records
 ├── .bmad-core/                  # BMAD framework configuration
 ├── ARCHIVE/                     # Historical documents
 └── EXAMPLES/                    # Reference implementations
@@ -86,19 +96,31 @@ The system uses an 8-table Airtable schema:
 ## Development Status
 
 ### Completed ✅
-- Requirements gathering and analysis
+- Requirements gathering and analysis (PRD v1.0)
 - System architecture design
 - Technology stack selection
 - Database schema design
-- UI/UX specification
+- UI/UX specification (v1.1)
 - Component library selection (shadcn/ui v4)
+- Frontend-PRD reconciliation and alignment
+- Version roadmap and prioritization
 
-### Next Steps
-- Set up development environment
-- Implement core database integration
-- Build frontend components
-- Develop document processing pipeline
-- Create user authentication system
+### Version 1.0 Scope (In Development)
+- Simple authentication for 1-3 users
+- Document processing pipeline with Docling
+- Airtable integration (8 tables)
+- Graph visualization (up to 1,000 nodes)
+- Visual ontology designer
+- Impact assessment workflow
+- Full mobile responsiveness
+- WCAG AA accessibility
+
+### Deferred to Version 1.1+
+- Multi-source connectors (BOX, Zoom, Exchange)
+- Bulk operations interface
+- Advanced monitoring dashboard
+- Complex JWT authentication
+- See [`version-roadmap.md`](./docs/version-roadmap.md) for full details
 
 ## Getting Started
 

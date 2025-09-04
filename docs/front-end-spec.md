@@ -47,6 +47,7 @@ This document defines the user experience goals, information architecture, user 
 | Date | Version | Description | Author |
 |------|---------|-------------|---------|
 | 2025-01-03 | 1.0 | Initial specification created | UX Expert |
+| 2025-01-04 | 1.1 | Updated with PRD reconciliation decisions - Added authentication, clarified node limits, confirmed mobile support | Sally (UX Expert) |
 
 ## User Journey Maps
 
@@ -146,6 +147,27 @@ Log Decision
 3. **Processing Queue** - Real-time status of document imports and chunking operations
 4. **History & Audit** - Complete trail of all changes, decisions, and system events
 5. **Help & Documentation** - Context-sensitive guidance and tooltips
+
+## Authentication & Session Management
+
+### Simple Authentication for v1.0
+
+**Implementation:** Basic login screen with session management for 1-3 users (per reconciliation decision 2025-01-04)
+
+**Key Components:**
+- **Login Screen:** Simple email/password form using shadcn/ui `Card`, `Form`, `Input`, and `Button` components
+- **Session Management:** Browser session storage with timeout handling
+- **User Indicator:** Avatar component in header showing logged-in user
+- **Logout:** Dropdown menu option with session cleanup
+
+**Authentication Flow:**
+```
+Login Page → Validate Credentials → Create Session → Dashboard
+                    ↓ (fail)
+              Show Error Message
+```
+
+**Note:** Complex JWT refresh token implementation deferred to Version Next. Current implementation focuses on simplicity for small team usage.
 
 ## Information Architecture (IA)
 
@@ -418,6 +440,7 @@ graph TD
 - **Progress tracker:**
   - `Progress` component for overall progress
   - Custom stepper using `Badge` and `Separator`
+  - Support for up to 5 parallel progress tracks (per reconciliation decision)
 - **Preview panels:**
   - `Tabs` for switching between views
   - `ScrollArea` for markdown content
@@ -477,7 +500,7 @@ graph TD
 
 #### Knowledge Graph Viewer
 
-**Purpose:** Explore and navigate the knowledge graph structure
+**Purpose:** Explore and navigate the knowledge graph structure (optimized for up to 1,000 nodes per reconciliation decision)
 
 **Key shadcn/ui Components:**
 - **Graph canvas:**
@@ -1489,9 +1512,9 @@ import { Search, Plus, Settings, ChevronDown } from 'lucide-react'
 
 | Breakpoint | Min Width | Max Width | Target Devices |
 |------------|-----------|-----------|----------------|
-| Mobile | 320px | 767px | Phones, small tablets |
+| Mobile | 320px | 767px | Phones, small tablets (full functionality per reconciliation) |
 | Tablet | 768px | 1023px | Tablets, small laptops |
-| Desktop | 1024px | 1919px | Laptops, desktops |
+| Desktop | 1024px | 1919px | Laptops, desktops (primary target) |
 | Wide | 1920px | - | Large monitors, TV displays |
 
 ### Adaptation Patterns

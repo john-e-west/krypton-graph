@@ -19,6 +19,7 @@ This architecture document covers the complete system design including:
 |------|---------|-------------|---------|
 | 2025-09-03 | 1.0 | Initial architecture consolidation | Winston (Architect) |
 | 2025-01-03 | 1.1 | Integrated front-end-spec.md requirements | System |
+| 2025-01-04 | 1.2 | Updated to align with PRD reconciliation decisions - simplified v1.0 scope | Winston (Architect) |
 
 ## Quick Reference - Key Files and Entry Points
 
@@ -424,7 +425,8 @@ FRONTEND_URL=https://app.krypton-graph.com
 
 ### Authentication & Authorization
 
-- **Authentication**: JWT-based with secure token storage
+- **Authentication (v1.0)**: Simple session-based authentication for 1-3 users
+- **Authentication (Version Next)**: JWT-based with refresh tokens and secure token storage
 - **Authorization**: Role-based access control (Admin, Advanced, Standard)
 - **API Security**: Rate limiting, request validation, CORS configuration
 
@@ -459,7 +461,7 @@ FRONTEND_URL=https://app.krypton-graph.com
    - Code splitting by route
 
 2. **Graph Visualization**
-   - Canvas/WebGL rendering for large graphs
+   - Canvas/WebGL rendering for graphs up to 1,000 nodes (v1.0 target)
    - Progressive rendering
    - Level-of-detail (LOD) system
    - Viewport culling
@@ -488,17 +490,18 @@ FRONTEND_URL=https://app.krypton-graph.com
    ```
 
 3. **Processing Optimization**
-   - Async/queue for document processing
+   - Async/queue for document processing (max 5 concurrent documents)
    - Chunked uploads for large files
    - Background jobs for impact assessment
    - Incremental graph updates
 
-### Performance Targets
+### Performance Targets (v1.0)
 
 - Page load: < 3 seconds on 3G
-- Graph render: < 1 second for 1000 nodes
+- Graph render: < 1 second for 1,000 nodes (v1.0 limit)
 - API response: < 200ms for queries
 - Document processing: < 30 seconds for 10MB file
+- Concurrent processing: Up to 5 documents simultaneously
 
 ## Testing Strategy
 
@@ -546,7 +549,8 @@ FRONTEND_URL=https://app.krypton-graph.com
    - Limited query capabilities
 
 2. **Graph Visualization**
-   - Performance degrades above 10,000 nodes
+   - Optimized for up to 1,000 nodes in v1.0
+   - Performance degrades above 1,000 nodes (10,000+ target for Version Next)
    - No 3D visualization currently
    - Limited layout algorithms
 
@@ -555,19 +559,45 @@ FRONTEND_URL=https://app.krypton-graph.com
    - LLM costs for large documents
    - No OCR for scanned documents
 
-### Planned Improvements
+### Version Next - Planned Improvements
 
-1. **Phase 2 Features**
+#### High Priority Features (per reconciliation decision 2025-01-04)
+1. **Multi-Source Document Connectors**
+   - BOX integration with OAuth authentication
+   - Zoom transcript API integration
+   - Exchange email connector
+   - Incremental sync capabilities
+
+2. **Enhanced Authentication**
+   - JWT-based authentication with refresh tokens
+   - Multi-user support (10+ users)
+   - Advanced role management
+
+3. **Advanced Processing**
+   - Bulk operations interface
+   - Graph optimization for 10,000+ nodes
+   - Concurrent processing beyond 5 documents
+
+4. **Monitoring & Analytics**
+   - System health dashboard
+   - API usage tracking
+   - Performance analytics
+   - Export/import functionality
+
+#### Low Priority Features
+1. **Collaboration Features**
+   - Ontology versioning UI
+   - User management & permissions
    - Real-time collaboration
-   - Advanced graph algorithms
-   - ML-powered entity extraction
-   - Multi-language support
+   - Team workspaces
 
 2. **Technical Enhancements**
    - GraphQL API option
    - Redis caching layer
    - WebSocket for real-time updates
    - Elasticsearch for advanced search
+   - ML-powered entity extraction
+   - Multi-language support
 
 ## Implementation Roadmap
 
@@ -575,7 +605,7 @@ FRONTEND_URL=https://app.krypton-graph.com
 - [x] Architecture documentation
 - [ ] shadcn/ui v4 setup with all components
 - [ ] Airtable MCP wrapper implementation
-- [ ] Authentication system
+- [ ] Simple session-based authentication (1-3 users)
 - [ ] Basic routing and navigation
 
 ### Phase 2: Core Features (Week 2)
@@ -586,7 +616,7 @@ FRONTEND_URL=https://app.krypton-graph.com
 - [ ] Smart chunk editor
 
 ### Phase 3: Advanced Features (Week 3-4)
-- [ ] Graph visualization with D3.js
+- [ ] Graph visualization with D3.js (optimized for 1,000 nodes)
 - [ ] Impact assessment dashboard
 - [ ] Clone-before-modify workflow
 - [ ] History and audit trail
@@ -606,6 +636,7 @@ FRONTEND_URL=https://app.krypton-graph.com
 - Advanced users can create complete ontologies with minimal friction
 - Zero data loss through clone-before-modify pattern
 - All changes tracked, reported, and reversible
+- Full mobile functionality across all features (per reconciliation decision 2025-01-04)
 
 ### Technical KPIs
 - 99.9% uptime
