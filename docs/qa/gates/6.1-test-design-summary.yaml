@@ -1,0 +1,38 @@
+test_design:
+  story: "6.1"
+  title: "ZEP Semantic Search"
+  date: "2025-01-06"
+  designer: "Quinn (Test Architect)"
+  
+  scenarios_total: 42
+  
+  by_level:
+    unit: 22
+    integration: 16
+    e2e: 8
+    
+  by_priority:
+    p0: 12
+    p1: 18
+    p2: 10
+    p3: 2
+    
+  coverage_gaps: []  # All ACs have test coverage
+  
+  high_risk_areas:
+    - security: "SQL injection, API key handling"
+    - performance: "200ms p95 SLA, concurrent load"
+    - integration: "ZEP API availability, rate limiting"
+    - data_quality: "Result relevance, deduplication"
+    
+  test_recommendations:
+    - "Execute P0 security tests first for fail-fast on vulnerabilities"
+    - "Validate ZEP integration early to identify dependency issues"
+    - "Run performance tests under realistic load conditions"
+    - "Use test containers for Redis cache in integration tests"
+    - "Implement retry logic for E2E tests to handle flakiness"
+    
+  trace_references:
+    test_design_matrix: "docs/qa/assessments/6.1-test-design-20250106.md"
+    p0_tests_count: 12
+    critical_paths: ["semantic search flow", "performance SLA", "security validation"]

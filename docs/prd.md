@@ -395,12 +395,65 @@ Single repository containing frontend, backend services, and shared utilities. T
 
 ## Epic 5: Advanced Processing & Optimization
 
-**Goal**: Add multi-source document ingestion capabilities (BOX, Zoom, Exchange), implement concurrent processing with queue management, add command palette for power users, optimize system performance to achieve 50+ documents/hour throughput, and create comprehensive monitoring dashboards for system observability.
+## Epic 9: Document-Driven Ontology System
 
-### Story 5.1: Multi-Source Document Connectors
+**Goal**: Implement a paradigm shift from manual ontology creation to intelligent, document-driven discovery that analyzes uploaded documents, suggests custom entity/edge types through AI, and achieves 95%+ classification rates while respecting Zep v3's 10-type limits. This epic transforms the user experience from complex manual setup to guided discovery in under 10 minutes.
+
+### Story 9.1: Core Document Analysis Pipeline
 **As a** user,
-**I want** to import documents from various enterprise sources,
-**so that** I can process all my organization's knowledge regardless of where it's stored.
+**I want** to upload documents and receive AI-suggested custom types,
+**so that** I can quickly create an effective ontology without manual configuration.
+
+**Acceptance Criteria:**
+1. Document upload supports multiple formats (PDF, DOCX, MD, TXT) with drag-and-drop
+2. Real-time analysis progress shown during document processing
+3. AI generates custom entity and edge type suggestions based on document content
+4. Classification rate prediction displayed before user commits to types
+5. Analysis completes within 30 seconds for typical documents
+6. Results cached for repeated analysis of same document
+7. Error handling for unsupported formats or processing failures
+
+### Story 9.2: Type Management & Refinement Interface
+**As a** user,
+**I want** to review, edit, and optimize suggested types,
+**so that** I can achieve maximum classification accuracy within the 10-type limit.
+
+**Acceptance Criteria:**
+1. Visual interface showing all suggested types with examples from document
+2. Type limit indicator showing usage (e.g., "7 of 10 entity types used")
+3. Inline editing of type names and descriptions
+4. Preview of classification results before applying types
+5. Unclassified items manager showing what doesn't match current types
+6. Iterative refinement workflow to improve classification rate
+7. Type optimization algorithm suggests merges to stay within limits
+
+### Story 9.3: Knowledge Graph Creation & Matching
+**As a** user,
+**I want** to create knowledge graphs with optimized ontologies and find similar existing ones,
+**so that** I can leverage successful patterns and avoid duplicate work.
+
+**Acceptance Criteria:**
+1. One-click knowledge graph creation after type review
+2. Automatic search for similar existing knowledge graphs
+3. Compatibility scoring for potential ontology matches
+4. Merge wizard for combining compatible ontologies
+5. Ontology library for saving and reusing successful patterns
+6. Classification metrics dashboard showing performance over time
+7. Export/import functionality for ontology definitions
+
+### Story 9.4: Performance Optimization & Edge Cases
+**As a** user,
+**I want** fast, reliable processing with helpful guidance,
+**so that** I can successfully create knowledge graphs even with challenging documents.
+
+**Acceptance Criteria:**
+1. Large document chunking with background processing
+2. Helpful guidance when classification rate is below 80%
+3. Domain-specific type suggestions based on document category
+4. Fallback to semi-manual process for difficult domains
+5. Interactive tutorial for first-time users
+6. Confidence scores shown for AI suggestions
+7. Performance profiling ensures <5 second type suggestion time
 
 **Acceptance Criteria:**
 1. BOX integration with OAuth authentication and folder browsing

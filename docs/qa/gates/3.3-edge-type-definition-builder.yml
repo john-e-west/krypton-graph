@@ -1,0 +1,8 @@
+schema: 1
+story: '3.3'
+gate: PASS
+status_reason: 'Well-designed relationship definition system with comprehensive validation and template support.'
+reviewer: 'Quinn'
+updated: '2025-01-05T15:34:00Z'
+top_issues: []
+waiver: { active: false }

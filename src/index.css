@@ -1,0 +1,526 @@
+@import "tailwindcss";
+
+/* Custom theme configuration for Tailwind v4 - Clean Modern Light Mode */
+@theme {
+  /* Clean white and light grey backgrounds */
+  --color-background: oklch(98% 0 0);
+  --color-foreground: oklch(20% 0.02 260);
+  --color-card: oklch(100% 0 0);
+  --color-card-foreground: oklch(20% 0.02 260);
+  --color-popover: oklch(100% 0 0);
+  --color-popover-foreground: oklch(20% 0.02 260);
+  
+  /* Modern blue primary */
+  --color-primary: oklch(60% 0.25 250);
+  --color-primary-foreground: oklch(100% 0 0);
+  
+  /* Soft purple secondary */
+  --color-secondary: oklch(95% 0.02 280);
+  --color-secondary-foreground: oklch(30% 0.02 260);
+  
+  /* Light grey muted */
+  --color-muted: oklch(96% 0.01 260);
+  --color-muted-foreground: oklch(45% 0.02 260);
+  
+  /* Vibrant accent */
+  --color-accent: oklch(94% 0.05 250);
+  --color-accent-foreground: oklch(30% 0.15 250);
+  
+  /* Red destructive */
+  --color-destructive: oklch(55% 0.30 25);
+  --color-destructive-foreground: oklch(100% 0 0);
+  
+  /* Subtle borders */
+  --color-border: oklch(92% 0.01 260);
+  --color-input: oklch(92% 0.01 260);
+  --color-ring: oklch(60% 0.25 250);
+  
+  --radius: 0.75rem;
+  
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Base styles */
+@layer base {
+  * {
+    border-color: theme(colors.border);
+  }
+  
+  body {
+    color: theme(colors.foreground);
+    background: theme(colors.background);
+    font-family: theme(fontFamily.sans);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+  }
+}
+
+/* Dark mode - Cyberpunk theme */
+.dark {
+  --color-background: oklch(0% 0 0);
+  --color-foreground: oklch(95% 0.01 180);
+  --color-card: oklch(5% 0.01 240);
+  --color-card-foreground: oklch(95% 0.01 180);
+  --color-popover: oklch(5% 0.01 240);
+  --color-popover-foreground: oklch(95% 0.01 180);
+  
+  /* Neon cyan primary */
+  --color-primary: oklch(75% 0.30 180);
+  --color-primary-foreground: oklch(10% 0.02 260);
+  
+  /* Electric blue secondary */
+  --color-secondary: oklch(65% 0.25 240);
+  --color-secondary-foreground: oklch(95% 0.01 180);
+  
+  /* Dark muted */
+  --color-muted: oklch(15% 0.02 260);
+  --color-muted-foreground: oklch(70% 0.08 180);
+  
+  /* Neon purple accent */
+  --color-accent: oklch(70% 0.28 320);
+  --color-accent-foreground: oklch(10% 0.02 260);
+  
+  /* Hot red destructive */
+  --color-destructive: oklch(70% 0.30 25);
+  --color-destructive-foreground: oklch(95% 0.01 180);
+  
+  /* Glowing borders */
+  --color-border: oklch(25% 0.08 260);
+  --color-input: oklch(25% 0.08 260);
+  --color-ring: oklch(75% 0.30 180);
+}
+
+/* Modern smooth animations for light mode */
+@keyframes subtle-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+}
+
+@keyframes smooth-slide {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes soft-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 oklch(60% 0.25 250 / 0.4),
+                0 0 0 0 oklch(60% 0.25 250 / 0.4);
+  }
+  100% {
+    box-shadow: 0 0 0 20px oklch(60% 0.25 250 / 0),
+                0 0 0 40px oklch(60% 0.25 250 / 0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes bounce-soft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Futuristic animation utilities */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes neon-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px oklch(75% 0.30 180 / 0.5),
+                0 0 40px oklch(75% 0.30 180 / 0.3),
+                0 0 60px oklch(75% 0.30 180 / 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px oklch(75% 0.30 180 / 0.7),
+                0 0 50px oklch(75% 0.30 180 / 0.5),
+                0 0 70px oklch(75% 0.30 180 / 0.3);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes glitch {
+  0%, 100% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0);
+  }
+  20% {
+    clip-path: inset(20% 0 30% 0);
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    clip-path: inset(50% 0 20% 0);
+    transform: translate(2px, -2px);
+  }
+  60% {
+    clip-path: inset(10% 0 60% 0);
+    transform: translate(-1px, 1px);
+  }
+  80% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(1px, -1px);
+  }
+}
+
+/* Light mode animation utilities */
+.animate-subtle-float {
+  animation: subtle-float 8s ease-in-out infinite;
+}
+
+.animate-smooth-slide {
+  animation: smooth-slide 0.5s ease-out;
+}
+
+.animate-fade-scale {
+  animation: fade-scale 0.3s ease-out;
+}
+
+.animate-soft-pulse {
+  animation: soft-pulse 2s ease-in-out infinite;
+}
+
+.animate-ripple {
+  animation: ripple 1s ease-out;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    oklch(98% 0 0) 0%,
+    oklch(100% 0 0) 50%,
+    oklch(98% 0 0) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+.animate-bounce-soft {
+  animation: bounce-soft 2s ease-in-out infinite;
+}
+
+/* Dark mode animation utilities */
+.animate-pulse-slow {
+  animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-neon-glow {
+  animation: neon-glow 2s ease-in-out infinite;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-scan-line {
+  animation: scan-line 8s linear infinite;
+}
+
+.animate-glitch {
+  animation: glitch 3s infinite;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animation-delay-600 {
+  animation-delay: 600ms;
+}
+
+.animation-delay-800 {
+  animation-delay: 800ms;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1000ms;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2000ms;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4000ms;
+}
+
+/* Light mode specific effects */
+.light-glass {
+  background: linear-gradient(135deg, 
+    oklch(100% 0 0 / 0.7) 0%,
+    oklch(98% 0 0 / 0.9) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid oklch(92% 0.01 260 / 0.5);
+  box-shadow: 0 8px 32px oklch(20% 0.02 260 / 0.1);
+}
+
+.light-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px oklch(60% 0.25 250 / 0.15),
+              0 8px 20px oklch(20% 0.02 260 / 0.1);
+}
+
+.light-gradient-border {
+  background: linear-gradient(135deg, 
+    oklch(60% 0.25 250) 0%,
+    oklch(70% 0.20 280) 50%,
+    oklch(65% 0.22 200) 100%);
+  padding: 1px;
+  border-radius: 0.75rem;
+}
+
+.light-gradient-text {
+  background: linear-gradient(135deg,
+    oklch(60% 0.25 250) 0%,
+    oklch(55% 0.28 280) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Dark mode glassmorphism effects */
+.glass {
+  background: linear-gradient(135deg, 
+    oklch(20% 0.05 260 / 0.1) 0%,
+    oklch(30% 0.08 280 / 0.05) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid oklch(50% 0.1 260 / 0.2);
+}
+
+/* Neon text effect */
+.neon-text {
+  text-shadow: 0 0 10px currentColor,
+               0 0 20px currentColor,
+               0 0 30px currentColor,
+               0 0 40px currentColor;
+}
+
+/* Holographic gradient */
+.holographic {
+  background: linear-gradient(
+    45deg,
+    oklch(75% 0.30 180),
+    oklch(65% 0.28 320),
+    oklch(80% 0.25 140),
+    oklch(70% 0.30 25),
+    oklch(75% 0.30 180)
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+/* Cyber grid background */
+.cyber-grid {
+  background-image: 
+    linear-gradient(oklch(75% 0.30 180 / 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(75% 0.30 180 / 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Kryptonian crystal animations */
+@keyframes crystal-shine {
+  0%, 100% {
+    background-position: -200% center;
+  }
+  50% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes heat-vision {
+  0%, 100% {
+    box-shadow: 0 0 20px oklch(70% 0.40 25 / 0.3),
+                0 0 40px oklch(70% 0.40 25 / 0.2),
+                inset 0 0 20px oklch(70% 0.40 25 / 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px oklch(70% 0.40 25 / 0.6),
+                0 0 60px oklch(70% 0.40 25 / 0.4),
+                inset 0 0 30px oklch(70% 0.40 25 / 0.2);
+  }
+}
+
+@keyframes solar-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.05);
+    filter: brightness(1.3);
+  }
+}
+
+@keyframes phantom-zone {
+  0%, 100% {
+    transform: rotateX(0deg) rotateY(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: rotateX(5deg) rotateY(-5deg);
+    opacity: 0.8;
+  }
+  50% {
+    transform: rotateX(-5deg) rotateY(5deg);
+    opacity: 0.9;
+  }
+  75% {
+    transform: rotateX(3deg) rotateY(-3deg);
+    opacity: 0.85;
+  }
+}
+
+/* Kryptonian effects */
+.crystal-bg {
+  background: linear-gradient(135deg,
+    oklch(55% 0.35 240 / 0.1) 0%,
+    oklch(85% 0.30 90 / 0.05) 25%,
+    oklch(60% 0.40 20 / 0.1) 50%,
+    oklch(55% 0.35 240 / 0.05) 75%,
+    oklch(85% 0.30 90 / 0.1) 100%);
+  background-size: 200% 200%;
+  animation: crystal-shine 8s linear infinite;
+}
+
+.kryptonian-text {
+  background: linear-gradient(90deg,
+    oklch(55% 0.35 240) 0%,
+    oklch(85% 0.30 90) 25%,
+    oklch(60% 0.40 20) 50%,
+    oklch(85% 0.30 90) 75%,
+    oklch(55% 0.35 240) 100%);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: crystal-shine 3s linear infinite;
+}
+
+.heat-vision-glow {
+  animation: heat-vision 2s ease-in-out infinite;
+}
+
+.solar-powered {
+  animation: solar-pulse 3s ease-in-out infinite;
+}
+
+.phantom-zone-effect {
+  animation: phantom-zone 6s ease-in-out infinite;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+/* Fortress of Solitude crystal pattern */
+.fortress-crystal {
+  background-image: 
+    linear-gradient(60deg, transparent 40%, oklch(55% 0.35 240 / 0.1) 50%, transparent 60%),
+    linear-gradient(-60deg, transparent 40%, oklch(85% 0.30 90 / 0.1) 50%, transparent 60%),
+    linear-gradient(0deg, transparent 40%, oklch(60% 0.40 20 / 0.05) 50%, transparent 60%);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 0, 15px 15px;
+}
+
+/* Superman shield gradient */
+.superman-shield {
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    oklch(55% 0.35 240) 0deg,
+    oklch(60% 0.40 20) 120deg,
+    oklch(85% 0.30 90) 240deg,
+    oklch(55% 0.35 240) 360deg
+  );
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}

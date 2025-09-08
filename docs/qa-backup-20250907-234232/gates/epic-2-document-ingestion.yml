@@ -1,0 +1,83 @@
+schema: 1
+epic: 'Epic 2'
+epic_title: 'Document Ingestion Pipeline'
+gate: CONCERNS
+status_reason: 'Complex pipeline with external dependencies lacks fallback strategies and security measures'
+reviewer: 'Quinn (Test Architect)'
+updated: '2025-09-08T10:00:00Z'
+
+top_issues:
+  - issue: 'No virus scanning for uploaded files'
+    severity: high
+    refs: ['Story 2.1']
+    suggested_owner: security
+  
+  - issue: 'Docling dependency has no fallback strategy'
+    severity: high
+    refs: ['Story 2.2']
+    suggested_owner: architect
+  
+  - issue: 'Document encryption not specified for sensitive content'
+    severity: high
+    refs: ['Story 2.4']
+    suggested_owner: security
+  
+  - issue: '50 docs/hour throughput not explicitly tested'
+    severity: medium
+    refs: ['Story 2.5']
+    suggested_owner: dev
+
+quality_score: 68
+expires: '2025-09-22T10:00:00Z'
+
+evidence:
+  stories_reviewed: 5
+  risks_identified: 4
+  trace:
+    stories_covered: [2.1, 2.2, 2.3, 2.4, 2.5]
+    gaps: ['Virus scanning', 'Encryption', 'Performance benchmarks']
+
+nfr_validation:
+  security:
+    status: FAIL
+    notes: 'Missing virus scanning and encryption for sensitive documents'
+  performance:
+    status: CONCERNS
+    notes: '50 docs/hour target needs explicit testing framework'
+  reliability:
+    status: CONCERNS
+    notes: 'External dependency on Docling without fallback'
+  maintainability:
+    status: PASS
+    notes: 'Clear separation of processing stages'
+
+recommendations:
+  immediate:
+    - action: 'Integrate virus scanning (ClamAV or cloud service)'
+      refs: ['Story 2.1', 'File upload']
+    - action: 'Implement document encryption at rest'
+      refs: ['Story 2.4', 'Airtable staging']
+    - action: 'Create Docling fallback strategy'
+      refs: ['Story 2.2', 'PDF processing']
+  
+  future:
+    - action: 'Add ML-based chunk quality scoring'
+      refs: ['Story 2.3', 'Smart chunking']
+    - action: 'Implement document deduplication'
+      refs: ['Story 2.4', 'Staging']
+
+test_coverage_requirements:
+  unit:
+    - 'File validation logic'
+    - 'Chunking algorithm with 10k limit'
+    - 'Character counting with metadata'
+  integration:
+    - 'Docling API integration'
+    - 'OpenAI smart boundary detection'
+    - 'Airtable batch operations'
+  performance:
+    - '50 documents/hour throughput'
+    - 'Large file processing (50MB)'
+  e2e:
+    - 'Complete document pipeline'
+    - 'Multi-file batch upload'

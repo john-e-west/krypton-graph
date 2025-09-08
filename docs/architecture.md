@@ -20,6 +20,7 @@ This architecture document covers the complete system design including:
 | 2025-09-03 | 1.0 | Initial architecture consolidation | Winston (Architect) |
 | 2025-01-03 | 1.1 | Integrated front-end-spec.md requirements | System |
 | 2025-01-04 | 1.2 | Updated to align with PRD reconciliation decisions - simplified v1.0 scope | Winston (Architect) |
+| 2025-09-07 | 2.0 | Major update: Document-driven ontology paradigm shift | Winston (Architect) |
 
 ## Quick Reference - Key Files and Entry Points
 
@@ -38,8 +39,10 @@ This architecture document covers the complete system design including:
 ### System Overview
 
 Krypton Graph is a knowledge graph management platform that combines:
-- **Visual ontology design** for defining entity and edge types
-- **Document processing pipeline** for extracting knowledge from documents
+- **Document-driven ontology discovery** for automatic type suggestion and creation
+- **AI-powered document analysis** for extracting and classifying knowledge
+- **Intelligent type optimization** for achieving 95%+ classification rates
+- **Knowledge graph matching** for discovering and reusing similar ontologies
 - **Impact assessment** for reviewing changes before committing
 - **Temporal graph capabilities** for tracking knowledge evolution
 
@@ -56,11 +59,14 @@ Krypton Graph is a knowledge graph management platform that combines:
 │  - D3.js for graph visualization        │
 ├─────────────────────────────────────────┤
 │      Application Services Layer         │
-│  - Ontology Management                  │
+│  - Document-Driven Ontology Discovery   │
+│  - AI-Powered Type Suggestion           │
 │  - Document Processing (Docling)        │
-│  - Smart Chunk Generation (LLM)         │
+│  - Smart Classification Engine          │
+│  - Unclassified Items Management        │
+│  - Knowledge Graph Matching             │
 │  - Impact Assessment Engine             │
-│  - Graph Operations (Zep patterns)      │
+│  - Graph Operations (Zep v3 API)        │
 ├─────────────────────────────────────────┤
 │        Data Access Layer                │
 │        (Airtable MCP)                   │
@@ -92,8 +98,9 @@ Krypton Graph is a knowledge graph management platform that combines:
 | **Database** | Airtable | Cloud | Primary data storage |
 | **Database Access** | Airtable MCP | Latest | Programmatic data operations |
 | **Document Processing** | Docling | Latest | Convert documents to markdown |
-| **LLM Integration** | OpenAI API | Latest | Smart chunk generation |
-| **Graph Patterns** | Zep (adapted) | N/A | Entity/edge type management |
+| **LLM Integration** | OpenAI API | Latest | Document analysis & type suggestion |
+| **Graph API** | Zep v3 | Latest | Knowledge graph operations |
+| **Type Analysis** | Custom AI Pipeline | Latest | Ontology discovery from documents |
 
 ## Source Tree and Module Organization
 
@@ -159,7 +166,7 @@ krypton-graph/
 │   │   │   ├── graphs/         # Graph operations
 │   │   │   └── auth/           # Authentication
 │   │   ├── (dashboard)/        # Dashboard route group
-│   │   │   ├── ontologies/     # Ontology management pages
+│   │   │   ├── ontologies/     # Document-driven ontology pages
 │   │   │   ├── documents/      # Document import pages
 │   │   │   ├── graphs/         # Graph visualization pages
 │   │   │   └── settings/       # Settings pages
@@ -169,7 +176,7 @@ krypton-graph/
 │   ├── components/             # React Components
 │   │   ├── ui/                 # shadcn/ui components
 │   │   ├── graph/              # Graph visualization
-│   │   ├── ontology/           # Ontology designer
+│   │   ├── ontology/           # Document-driven type management
 │   │   ├── document/           # Document processing
 │   │   └── layout/             # Layout components
 │   │
@@ -194,7 +201,7 @@ krypton-graph/
 │   │
 │   ├── server/                 # Server-only code
 │   │   ├── services/           # Business logic
-│   │   │   ├── ontology.ts     # Ontology operations
+│   │   │   ├── ontology.ts     # Document-driven ontology ops
 │   │   │   ├── document.ts     # Document processing
 │   │   │   └── impact.ts       # Impact assessment
 │   │   └── queue/              # Background jobs
@@ -389,26 +396,36 @@ The system uses 8 interconnected tables in Airtable:
 
 ### API Design Patterns
 
-#### RESTful Endpoints (Planned)
+#### RESTful Endpoints (Updated for Document-Driven Approach)
 
 ```typescript
+// Document-Driven Ontology Discovery
+POST   /api/documents/analyze          // Analyze document for type suggestions
+GET    /api/documents/:id/suggestions  // Get AI-generated type suggestions
+POST   /api/documents/:id/apply-types  // Apply suggested types to create KG
+
 // Ontology Management
 GET    /api/ontologies
 POST   /api/ontologies
 PUT    /api/ontologies/:id
 DELETE /api/ontologies/:id
+GET    /api/ontologies/similar         // Find KGs with similar ontologies
+POST   /api/ontologies/merge           // Merge compatible ontologies
 
-// Entity/Edge Types
+// Entity/Edge Types with Classification Metrics
 GET    /api/ontologies/:id/entities
 POST   /api/ontologies/:id/entities
 GET    /api/ontologies/:id/edges
 POST   /api/ontologies/:id/edges
+GET    /api/ontologies/:id/unclassified // Get unclassified items
+POST   /api/ontologies/:id/optimize     // Optimize types for better classification
 
 // Document Processing
 POST   /api/documents/upload
 GET    /api/documents/:id/chunks
 PUT    /api/documents/:id/chunks/:chunkId
 POST   /api/documents/:id/process
+GET    /api/documents/:id/classification-report // Classification metrics
 
 // Impact Assessment
 POST   /api/graphs/:id/clone
@@ -447,6 +464,563 @@ interface EdgeDefinition {
   sourceConstraints: EntityClass[];
   targetConstraints: EntityClass[];
   properties: Record<string, PropertyDefinition>;
+}
+```
+
+## Document-Driven Ontology System
+
+### Paradigm Shift: From Manual to Intelligent Discovery
+
+The Document-Driven Ontology System represents a fundamental shift in how knowledge graphs are created and managed. Rather than requiring users to manually define entity and edge types before processing documents, the system now analyzes documents first and intelligently suggests optimal custom types based on the actual content.
+
+### Core Concepts
+
+#### Classification-First Design
+- **Goal**: Achieve 95%+ classification rate for all entities and edges
+- **Constraint**: Maximum 10 custom entity types and 10 custom edge types (Zep v3 limits)
+- **Strategy**: AI analyzes documents to suggest the most impactful custom types
+
+#### Document Analysis Pipeline
+
+```
+Document Upload → AI Analysis → Type Suggestion → User Refinement → 
+KG Creation → Classification → Iterative Improvement
+```
+
+### System Architecture
+
+#### Document Analyzer Service
+
+```typescript
+interface DocumentAnalyzer {
+  // Analyze document and extract patterns
+  analyzeDocument(doc: Document): Promise<DocumentAnalysis>;
+  
+  // Generate optimal custom types based on analysis
+  suggestCustomTypes(analysis: DocumentAnalysis): Promise<OntologySuggestion>;
+  
+  // Calculate expected classification rate
+  predictClassificationRate(suggestion: OntologySuggestion): Promise<ClassificationMetrics>;
+}
+
+interface DocumentAnalysis {
+  domain: 'Healthcare' | 'Finance' | 'Legal' | 'Technology' | 'Research';
+  entityPatterns: EntityPattern[];
+  relationshipPatterns: RelationshipPattern[];
+  contentSamples: string[];
+  statistics: {
+    totalEntities: number;
+    totalRelationships: number;
+    uniquePatterns: number;
+  };
+}
+
+interface OntologySuggestion {
+  entityTypes: CustomEntityType[];
+  edgeTypes: CustomEdgeType[];
+  expectedClassification: {
+    entities: number;  // percentage
+    edges: number;     // percentage
+    overall: number;   // percentage
+  };
+  unclassifiedExamples: {
+    entities: string[];
+    edges: string[];
+  };
+}
+```
+
+#### Classification Engine
+
+```typescript
+interface ClassificationEngine {
+  // Apply ontology to document content
+  classifyWithOntology(
+    content: string,
+    ontology: Ontology
+  ): Promise<ClassificationResult>;
+  
+  // Identify unclassified items with context
+  findUnclassified(result: ClassificationResult): UnclassifiedItem[];
+  
+  // Suggest type improvements for unclassified items
+  suggestTypeRefinements(
+    unclassified: UnclassifiedItem[],
+    currentOntology: Ontology
+  ): Promise<RefinementSuggestion[]>;
+}
+
+interface ClassificationResult {
+  entities: ClassifiedEntity[];
+  edges: ClassifiedEdge[];
+  metrics: {
+    totalEntities: number;
+    classifiedEntities: number;
+    totalEdges: number;
+    classifiedEdges: number;
+    classificationRate: number;
+  };
+}
+```
+
+#### Knowledge Graph Matching
+
+```typescript
+interface KnowledgeGraphMatcher {
+  // Find similar knowledge graphs by ontology
+  findSimilarGraphs(ontology: Ontology): Promise<SimilarGraph[]>;
+  
+  // Calculate compatibility between ontologies
+  calculateCompatibility(
+    ontology1: Ontology,
+    ontology2: Ontology
+  ): Promise<CompatibilityScore>;
+  
+  // Merge compatible ontologies
+  mergeOntologies(
+    ontologies: Ontology[]
+  ): Promise<MergedOntology>;
+}
+
+interface SimilarGraph {
+  graphId: string;
+  name: string;
+  ontology: Ontology;
+  compatibilityScore: number;
+  sharedTypes: {
+    entities: string[];
+    edges: string[];
+  };
+}
+```
+
+### Workflow Implementation
+
+#### Step 1: Document Upload and Analysis
+
+```typescript
+// User uploads document
+const document = await uploadDocument(file);
+
+// AI analyzes document structure and content
+const analysis = await documentAnalyzer.analyzeDocument(document);
+
+// Generate optimal type suggestions
+const suggestions = await documentAnalyzer.suggestCustomTypes(analysis);
+```
+
+#### Step 2: Type Review and Refinement
+
+```typescript
+// User reviews suggested types
+interface TypeReviewUI {
+  entityTypes: Array<{
+    name: string;
+    description: string;
+    expectedCount: number;
+    examples: string[];
+    attributes: AttributeDefinition[];
+  }>;
+  edgeTypes: Array<{
+    name: string;
+    description: string;
+    sourceTypes: string[];
+    targetTypes: string[];
+    examples: string[];
+  }>;
+  metrics: {
+    typeUsage: number;  // e.g., "7/10 entity types"
+    expectedClassification: number;  // e.g., "95.7%"
+  };
+}
+```
+
+#### Step 3: Knowledge Graph Creation
+
+```typescript
+// Create KG with optimized ontology
+const kg = await createKnowledgeGraph({
+  name: document.name + "_KG",
+  ontology: refinedOntology,
+  source: document
+});
+
+// Process document with classification
+const result = await classificationEngine.classifyWithOntology(
+  document.content,
+  refinedOntology
+);
+```
+
+#### Step 4: Iterative Improvement
+
+```typescript
+// Handle unclassified items
+const unclassified = classificationEngine.findUnclassified(result);
+
+// Get improvement suggestions
+const refinements = await classificationEngine.suggestTypeRefinements(
+  unclassified,
+  kg.ontology
+);
+
+// Apply refinements (respecting 10-type limit)
+const improvedOntology = await applyRefinements(kg.ontology, refinements);
+```
+
+### UI/UX Components
+
+#### Document Analysis Dashboard
+
+```typescript
+interface DocumentAnalysisDashboard {
+  // Upload zone with drag-and-drop
+  uploadZone: DocumentUploadComponent;
+  
+  // Real-time analysis progress
+  analysisProgress: ProgressIndicator;
+  
+  // Domain detection display
+  domainIndicator: DomainBadge;
+  
+  // Pattern discovery visualization
+  patternVisualizer: PatternGraph;
+}
+```
+
+#### Type Suggestion Interface
+
+```typescript
+interface TypeSuggestionInterface {
+  // Visual type hierarchy
+  typeHierarchy: TypeTreeView;
+  
+  // Type limit indicators
+  limitIndicators: {
+    entities: UsageBar;  // "7/10 types used"
+    edges: UsageBar;     // "8/10 types used"
+  };
+  
+  // Classification preview
+  classificationPreview: {
+    chart: ClassificationChart;
+    metrics: MetricsPanel;
+    samples: UnclassifiedSamples;
+  };
+}
+```
+
+#### Unclassified Items Manager
+
+```typescript
+interface UnclassifiedItemsManager {
+  // List of unclassified items with context
+  itemList: VirtualizedList<UnclassifiedItem>;
+  
+  // Bulk actions
+  actions: {
+    createNewType: () => void;
+    mergeIntoExisting: (typeId: string) => void;
+    ignoreItems: () => void;
+  };
+  
+  // Smart suggestions
+  suggestions: TypeSuggestionPanel;
+}
+```
+
+### Integration with Zep v3 API
+
+#### Custom Type Generation
+
+```python
+# Generate Zep-compatible type definitions
+class CustomTypeGenerator:
+    def generate_entity_type(self, suggestion):
+        """Generate Zep EntityModel from suggestion"""
+        return f"""
+class {suggestion.name}(EntityModel):
+    ''''{suggestion.description}''''
+    {self._generate_attributes(suggestion.attributes)}
+    
+    class Meta:
+        description = "{suggestion.description}"
+        extractable = True
+"""
+
+    def generate_edge_type(self, suggestion):
+        """Generate Zep EdgeModel from suggestion"""
+        return f"""
+class {suggestion.name}(EdgeModel):
+    ''''{suggestion.description}''''
+    source_types = {suggestion.source_types}
+    target_types = {suggestion.target_types}
+    
+    class Meta:
+        description = "{suggestion.description}"
+"""
+```
+
+#### Classification Optimization
+
+```python
+# Optimize types for better classification
+class ClassificationOptimizer:
+    def optimize_descriptions(self, ontology, unclassified_samples):
+        """Refine type descriptions for better AI classification"""
+        optimized = []
+        for type_def in ontology.types:
+            # Analyze why items weren't classified
+            missed_patterns = self.analyze_misses(type_def, unclassified_samples)
+            
+            # Update description to capture missed patterns
+            type_def.description = self.enhance_description(
+                type_def.description,
+                missed_patterns
+            )
+            optimized.append(type_def)
+        return optimized
+```
+
+### Performance Metrics
+
+#### Key Performance Indicators
+
+```typescript
+interface OntologyKPIs {
+  // Primary metrics
+  classificationRate: number;        // Target: >95%
+  timeToFirstKG: number;             // Target: <10 minutes
+  averageCustomTypes: number;        // Target: <8 types
+  
+  // Secondary metrics  
+  ontologyReuseRate: number;         // Times existing ontology used
+  unclassifiedPerDocument: number;   // Average unclassified items
+  refinementIterations: number;      // User refinement actions
+  typeStability: number;             // Changes over time
+}
+```
+
+#### Success Criteria
+
+1. **Classification Excellence**: 95%+ of entities and edges classified
+2. **Rapid Onboarding**: Document to KG in under 10 minutes
+3. **Efficient Type Usage**: Average 7-8 custom types per domain
+4. **High Reusability**: 60%+ documents use existing ontologies
+5. **Minimal Refinement**: <3 refinement iterations needed
+
+### Benefits Over Manual Approach
+
+| Aspect | Manual Approach | Document-Driven Approach |
+|--------|----------------|-------------------------|
+| **Setup Time** | 1-2 hours defining types | 5-10 minutes reviewing suggestions |
+| **Classification Rate** | 60-70% typical | 95%+ achievable |
+| **Type Quality** | Abstract, theoretical | Concrete, content-based |
+| **Learning Curve** | Steep (requires KG expertise) | Gentle (guided process) |
+| **Iteration Speed** | Slow (manual analysis) | Fast (AI-powered) |
+| **Reusability** | Low (custom per use case) | High (pattern matching) |
+
+## Data Flow Architecture
+
+### Document-Driven Processing Pipeline
+
+The new document-driven approach fundamentally changes how data flows through the system. Instead of a linear pipeline, we now have an iterative, feedback-driven flow that optimizes for classification accuracy.
+
+#### Primary Data Flow
+
+```mermaid
+graph TD
+    A[Document Upload] --> B[AI Document Analysis]
+    B --> C[Pattern Extraction]
+    C --> D[Type Suggestion Engine]
+    D --> E[User Review Interface]
+    E --> F[Ontology Creation]
+    F --> G[Document Classification]
+    G --> H{Classification Rate}
+    H -->|<95%| I[Unclassified Analysis]
+    I --> J[Type Refinement]
+    J --> F
+    H -->|>=95%| K[Knowledge Graph Storage]
+    K --> L[Graph Matching Service]
+    L --> M[Ontology Library]
+```
+
+#### Data Processing States
+
+```typescript
+enum ProcessingState {
+  UPLOADED = 'uploaded',
+  ANALYZING = 'analyzing',
+  SUGGESTING = 'suggesting',
+  REVIEWING = 'reviewing',
+  CLASSIFYING = 'classifying',
+  OPTIMIZING = 'optimizing',
+  COMPLETE = 'complete',
+  ERROR = 'error'
+}
+
+interface ProcessingContext {
+  documentId: string;
+  state: ProcessingState;
+  analysis?: DocumentAnalysis;
+  suggestions?: OntologySuggestion;
+  ontology?: Ontology;
+  classificationResult?: ClassificationResult;
+  optimizationHistory: OptimizationStep[];
+}
+```
+
+### Service Communication Patterns
+
+#### Event-Driven Architecture
+
+```typescript
+// Event definitions for document-driven flow
+interface OntologyEvents {
+  'document:uploaded': { documentId: string; content: string };
+  'analysis:complete': { documentId: string; analysis: DocumentAnalysis };
+  'types:suggested': { documentId: string; suggestions: OntologySuggestion };
+  'ontology:created': { ontologyId: string; documentId: string };
+  'classification:complete': { result: ClassificationResult };
+  'optimization:required': { unclassified: UnclassifiedItem[] };
+  'graph:created': { graphId: string; ontologyId: string };
+}
+
+// Event handler implementation
+class OntologyEventHandler {
+  async handleDocumentUploaded(event: OntologyEvents['document:uploaded']) {
+    // Trigger AI analysis
+    const analysis = await this.analyzer.analyze(event.content);
+    this.emit('analysis:complete', { documentId: event.documentId, analysis });
+  }
+  
+  async handleAnalysisComplete(event: OntologyEvents['analysis:complete']) {
+    // Generate type suggestions
+    const suggestions = await this.suggester.suggest(event.analysis);
+    this.emit('types:suggested', { documentId: event.documentId, suggestions });
+  }
+}
+```
+
+#### API Gateway Pattern
+
+```typescript
+// Unified API gateway for document-driven operations
+class OntologyAPIGateway {
+  // Document analysis endpoints
+  async analyzeDocument(doc: Document): Promise<AnalysisResponse> {
+    const services = [
+      this.patternExtractor.extract(doc),
+      this.domainClassifier.classify(doc),
+      this.entityRecognizer.recognize(doc)
+    ];
+    
+    const results = await Promise.all(services);
+    return this.aggregateAnalysis(results);
+  }
+  
+  // Type optimization endpoints
+  async optimizeTypes(
+    ontology: Ontology,
+    unclassified: UnclassifiedItem[]
+  ): Promise<OptimizedOntology> {
+    const suggestions = await this.optimizer.suggest(ontology, unclassified);
+    return this.applyOptimizations(ontology, suggestions);
+  }
+}
+```
+
+### Caching Strategy
+
+#### Multi-Level Cache Architecture
+
+```typescript
+interface CacheLayer {
+  // L1: In-memory cache for active sessions
+  sessionCache: Map<string, ProcessingContext>;
+  
+  // L2: Redis cache for analysis results
+  analysisCache: {
+    get(documentHash: string): Promise<DocumentAnalysis | null>;
+    set(documentHash: string, analysis: DocumentAnalysis): Promise<void>;
+    ttl: 3600; // 1 hour
+  };
+  
+  // L3: Airtable cache for ontologies
+  ontologyCache: {
+    similar(embedding: number[]): Promise<Ontology[]>;
+    store(ontology: Ontology): Promise<void>;
+  };
+}
+```
+
+### Real-Time Updates
+
+#### WebSocket Communication
+
+```typescript
+// Real-time classification progress updates
+class ClassificationWebSocket {
+  broadcastProgress(sessionId: string, progress: ClassificationProgress) {
+    this.broadcast({
+      type: 'classification:progress',
+      sessionId,
+      data: {
+        processed: progress.processed,
+        total: progress.total,
+        classified: progress.classified,
+        currentRate: progress.classificationRate
+      }
+    });
+  }
+  
+  notifyOptimizationAvailable(sessionId: string, suggestions: TypeSuggestion[]) {
+    this.send(sessionId, {
+      type: 'optimization:available',
+      suggestions,
+      potentialImprovement: this.calculateImprovement(suggestions)
+    });
+  }
+}
+```
+
+### Error Handling and Recovery
+
+#### Fault-Tolerant Processing
+
+```typescript
+class ResilientProcessor {
+  async processWithRetry(document: Document): Promise<ProcessingResult> {
+    const maxRetries = 3;
+    let lastError: Error;
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        // Save checkpoint before each major step
+        await this.saveCheckpoint(document.id, 'analysis', attempt);
+        const analysis = await this.analyze(document);
+        
+        await this.saveCheckpoint(document.id, 'suggestion', attempt);
+        const suggestions = await this.suggest(analysis);
+        
+        await this.saveCheckpoint(document.id, 'classification', attempt);
+        const result = await this.classify(document, suggestions);
+        
+        return result;
+      } catch (error) {
+        lastError = error;
+        await this.handleProcessingError(document.id, error, attempt);
+        
+        if (this.isRecoverable(error) && attempt < maxRetries) {
+          await this.delay(Math.pow(2, attempt) * 1000); // Exponential backoff
+          continue;
+        }
+        break;
+      }
+    }
+    
+    throw new ProcessingError('Max retries exceeded', lastError);
+  }
 }
 ```
 
